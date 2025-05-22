@@ -1,0 +1,87 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+const double PI = 3.141592653589793;
+
+// Clase abstracta base
+class FiguraGeometrica {
+protected:
+    double area;
+    bool areaCalculada;
+
+public:
+    FiguraGeometrica() : area(0), areaCalculada(false) {}
+
+    // Método puramente virtual
+    virtual void calcularArea() = 0;
+
+    double obtenerArea() {
+        if (!areaCalculada) {
+            calcularArea();
+        }
+        return area;
+    }
+
+    // Método virtual para mostrar los datos
+    virtual void mostrarDatos() const = 0;
+
+    // Virtual destructor en clases base abstractas
+    virtual ~FiguraGeometrica() {}
+};
+
+// Clase concreta: Triángulo
+class Triangulo : public FiguraGeometrica {
+private:
+    double base;
+    double altura;
+
+public:
+    Triangulo(double b, double h) : base(b), altura(h) {}
+
+    void calcularArea() override {
+        area = (base * altura) / 2;
+        areaCalculada = true;
+    }
+
+    void mostrarDatos() const override {
+        cout << "Triángulo - Base: " << base
+             << ", Altura: " << altura
+             << ", Área: " << area << endl;
+    }
+};
+
+// Clase concreta: Círculo
+class Circulo : public FiguraGeometrica {
+private:
+    double radio;
+
+public:
+    Circulo(double r) : radio(r) {}
+
+    void calcularArea() override {
+        area = PI * pow(radio, 2);  // Corrección aquí (antes estaba elevado a 6)
+        areaCalculada = true;
+    }
+
+    void mostrarDatos() const override {
+        cout << "Círculo - Radio: " << radio
+             << ", Área: " << area << endl;
+    }
+};
+
+int main() {
+    Triangulo t(20, 10);
+    Circulo c(9);
+
+    // Punteros a la clase base para polimorfismo
+    FiguraGeometrica* figuras[] = { &t, &c };
+
+    for (FiguraGeometrica* figura : figuras) {
+        figura->obtenerArea();   // Asegura que el área esté calculada
+        figura->mostrarDatos();  // Usa polimorfismo
+    }
+
+    return 0;
+}
