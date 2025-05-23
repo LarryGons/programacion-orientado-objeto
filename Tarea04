@@ -1,0 +1,99 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class FigGeo {
+protected:
+    float area;
+public:
+    virtual float calcArea() = 0;
+
+    float getArea() {
+        return area;
+    }
+
+    void saveArea() {
+        if (area == 0) {
+            cout << "Calculando area...\n";
+            area = calcArea();
+        }
+    }
+};
+
+class Triangulo : public FigGeo {
+private:
+    float base, altura;
+public:
+    Triangulo() {
+        base = 1.0;
+        altura = 1.0;
+        area = 0;
+    }
+
+    Triangulo(float b, float h) {
+        base = b;
+        altura = h;
+        area = 0;
+    }
+
+    float calcArea() override {
+        return (base * altura) / 2.0;
+    }
+
+    float getBase() {
+        return base;
+    }
+
+    float getAltura() {
+        return altura;
+    }
+
+    void setBase(float b) {
+        base = b;
+    }
+
+    void setAltura(float h) {
+        altura = h;
+    }
+};
+
+class Circulo : public FigGeo {
+private:
+    float radio;
+public:
+    Circulo() {
+        radio = 1.0;
+        area = 0;
+    }
+
+    Circulo(float r) {
+        radio = r;
+        area = 0;
+    }
+
+    float calcArea() override {
+        return M_PI * radio * radio;
+    }
+
+    float getRadio() {
+        return radio;
+    }
+
+    void setRadio(float r) {
+        radio = r;
+    }
+};
+
+int main() {
+    Triangulo t(3.0, 4.0);
+    Circulo c(5.0);
+
+    t.saveArea();
+    c.saveArea();
+
+    cout << "Area del triangulo: " << t.getArea() << endl;
+    cout << "Area del circulo: " << c.getArea() << endl;
+
+    return 0;
+}
